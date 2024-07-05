@@ -1,4 +1,4 @@
-package net.jneto;
+package net.jneto.models;
 
 public class RawModel {
 

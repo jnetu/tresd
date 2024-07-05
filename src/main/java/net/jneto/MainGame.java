@@ -1,6 +1,9 @@
 package net.jneto;
 
+import net.jneto.models.RawModel;
+import net.jneto.models.TexturedModel;
 import net.jneto.shaders.StaticShader;
+import net.jneto.textures.ModelTexture;
 import org.lwjgl.glfw.GLFW;
 import static org.lwjgl.opengl.GL30.*;
 
@@ -29,10 +32,10 @@ public class MainGame {
 
 
         float[] vertices = {
-                -0.5f, 0.5f, 0f,   //v0
-                -0.5f, -0.5f, 0f,  //v1
-                0.5f, -0.5f, 0f,   //v2
-                0.5f, 0.5f, 0f     //v3
+                -0.5f,  0.5f, 0f,   // V0
+                -0.5f, -0.5f, 0f,   // V1
+                0.5f, -0.5f, 0f,   // V2
+                0.5f,  0.5f, 0f    // V3
         };
         //order to render indices method:
         int[] indices = {
@@ -40,13 +43,24 @@ public class MainGame {
                 3, 1, 2  //triangle: v3,v1,v2
         };
 
-        RawModel model = loader.loadToVAO(vertices, indices);
+        float[] textureCoords = {
+                0, 0,
+                0, 1,
+                1, 1,
+                1, 0
+        };
+
+        RawModel model = loader.loadToVAO(vertices, textureCoords,indices);
+        ModelTexture texture = new ModelTexture(loader.loadTexture("tree"));
+        TexturedModel texturedModel = new TexturedModel(model, texture);
+
+
 
         while (!GLFW.glfwWindowShouldClose(window)) {
             glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
             shader.start();
             renderer.prepare();
-            renderer.render(model);
+            renderer.render(texturedModel);
             shader.stop();
             GLFW.glfwSwapBuffers(window);
             GLFW.glfwPollEvents();
