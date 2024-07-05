@@ -1,7 +1,8 @@
 package net.jneto;
 
+import net.jneto.shaders.StaticShader;
 import org.lwjgl.glfw.GLFW;
-import org.lwjgl.opengl.GL30;
+import static org.lwjgl.opengl.GL30.*;
 
 import java.io.IOException;
 
@@ -14,7 +15,7 @@ public class MainGame {
         try {
             new MainGame().run(displayManager.getWindow());
         } catch (IOException e) {
-            e.printStackTrace();
+            System.err.println(e.getMessage());
         }
 
         displayManager.cleanUp();
@@ -23,7 +24,9 @@ public class MainGame {
     public void run(long window) throws IOException {
         Loader loader = new Loader();
         Renderer renderer = new Renderer();
-        ShaderProgram shader = new ShaderProgram("src/main/java/net/jneto/vertexShader.glsl", "src/main/java/net/jneto/fragmentShader.glsl");
+
+        StaticShader shader = new StaticShader();
+
 
         float[] vertices = {
                 -0.5f, 0.5f, 0f,   //v0
@@ -40,7 +43,7 @@ public class MainGame {
         RawModel model = loader.loadToVAO(vertices, indices);
 
         while (!GLFW.glfwWindowShouldClose(window)) {
-            GL30.glClear(GL30.GL_COLOR_BUFFER_BIT | GL30.GL_DEPTH_BUFFER_BIT);
+            glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
             shader.start();
             renderer.prepare();
             renderer.render(model);

@@ -1,7 +1,7 @@
 package net.jneto;
 
 import org.lwjgl.BufferUtils;
-import org.lwjgl.opengl.GL30;
+import static org.lwjgl.opengl.GL30.*;
 
 import java.nio.FloatBuffer;
 import java.nio.IntBuffer;
@@ -15,48 +15,48 @@ public class Loader {
 
     public RawModel loadToVAO(float[] positions, int[] indices){
         int vaoID = createVAO();
-        bindIndixesBuffer(indices);
+        bindIndicesBuffer(indices);
         storeDataInAttributeList(0,positions);
         unbindVAO();
         return new RawModel(vaoID, indices.length);
     }
 
     private int createVAO(){
-        int vaoID = GL30.glGenVertexArrays();
+        int vaoID = glGenVertexArrays();
         vaos.add(vaoID);
-        GL30.glBindVertexArray(vaoID);
+        glBindVertexArray(vaoID);
         return vaoID;
     }
 
     public void cleanUp(){
         for(int vao : vaos){
-            GL30.glDeleteVertexArrays(vao);
+            glDeleteVertexArrays(vao);
         }
         for(int vbo : vbos){
-            GL30.glDeleteBuffers(vbo);
+            glDeleteBuffers(vbo);
         }
 
     }
 
     private void storeDataInAttributeList(int attributeNumber, float[] data){
-        int vboID = GL30.glGenBuffers();
+        int vboID = glGenBuffers();
         vbos.add(vboID);
-        GL30.glBindBuffer(GL30.GL_ARRAY_BUFFER, vboID);
+        glBindBuffer(GL_ARRAY_BUFFER, vboID);
         FloatBuffer buffer = storeDataInFloatBuffer(data);
-        GL30.glBufferData(GL30.GL_ARRAY_BUFFER, buffer, GL30.GL_STATIC_DRAW);
-        GL30.glVertexAttribPointer(attributeNumber,3,GL30.GL_FLOAT,false,0,0);
-        GL30.glBindBuffer(GL30.GL_ARRAY_BUFFER, 0);
+        glBufferData(GL_ARRAY_BUFFER, buffer, GL_STATIC_DRAW);
+        glVertexAttribPointer(attributeNumber,3,GL_FLOAT,false,0,0);
+        glBindBuffer(GL_ARRAY_BUFFER, 0);
     }
     private void unbindVAO(){
-        GL30.glBindVertexArray(0);
+        glBindVertexArray(0);
     }
 
-    private void bindIndixesBuffer(int[] indices){
-        int vboID = GL30.glGenBuffers();
+    private void bindIndicesBuffer(int[] indices){
+        int vboID = glGenBuffers();
         vbos.add(vboID);
-        GL30.glBindBuffer(GL30.GL_ELEMENT_ARRAY_BUFFER, vboID);
+        glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, vboID);
         IntBuffer buffer = storeDataInIntBuffer(indices);
-        GL30.glBufferData(GL30.GL_ELEMENT_ARRAY_BUFFER, buffer, GL30.GL_STATIC_DRAW);
+        glBufferData(GL_ELEMENT_ARRAY_BUFFER, buffer, GL_STATIC_DRAW);
     }
 
     private IntBuffer storeDataInIntBuffer(int[] data){
