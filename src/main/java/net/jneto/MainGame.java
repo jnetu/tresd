@@ -12,6 +12,7 @@ import java.io.IOException;
 public class MainGame {
 
     public static void main(String[] args) {
+    	System.out.println("LWJGL Version: " + org.lwjgl.Version.getVersion());
         DisplayManager displayManager = new DisplayManager();
         displayManager.init();
 
