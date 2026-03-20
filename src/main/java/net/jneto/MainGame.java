@@ -4,10 +4,13 @@ import net.jneto.models.RawModel;
 import net.jneto.models.TexturedModel;
 import net.jneto.shaders.StaticShader;
 import net.jneto.textures.ModelTexture;
+import org.joml.Vector3f;
 import org.lwjgl.glfw.GLFW;
 import static org.lwjgl.opengl.GL30.*;
 
 import java.io.IOException;
+
+import toolbox.Maths;
 
 public class MainGame {
 
@@ -60,6 +63,10 @@ public class MainGame {
         while (!GLFW.glfwWindowShouldClose(window)) {
             glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
             shader.start();
+            shader.connectTextureUnits();
+            shader.loadTransformationMatrix(
+                    Maths.createTransformationMatrix(new Vector3f(0, 0, 0), 0, 0, 0, 1)
+            );
             renderer.prepare();
             renderer.render(texturedModel);
             shader.stop();
