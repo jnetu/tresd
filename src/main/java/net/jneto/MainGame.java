@@ -4,6 +4,8 @@ import net.jneto.models.RawModel;
 import net.jneto.models.TexturedModel;
 import net.jneto.shaders.StaticShader;
 import net.jneto.textures.ModelTexture;
+
+import org.joml.Matrix4f;
 import org.joml.Vector3f;
 import org.lwjgl.glfw.GLFW;
 import static org.lwjgl.opengl.GL30.*;
@@ -67,6 +69,11 @@ public class MainGame {
             shader.loadTransformationMatrix(
                     Maths.createTransformationMatrix(new Vector3f(0, 0, 0), 0, 0, 0, 1)
             );
+            
+            shader.loadTransformationMatrix(new Matrix4f().identity());
+            renderer.render(texturedModel);
+            
+            
             renderer.prepare();
             renderer.render(texturedModel);
             shader.stop();

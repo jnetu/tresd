@@ -80,6 +80,9 @@ public abstract class ShaderProgram {
     	//matrix.store(matrixBuffer); --LWJGL 2
     	matrix.get(matrixBuffer);
     	matrixBuffer.flip();
+    	
+    	matrixBuffer.clear();
+    	matrix.get(matrixBuffer);
     	GL20.glUniformMatrix4fv(location, false, matrixBuffer);
     }
 
